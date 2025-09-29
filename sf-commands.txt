@@ -1,0 +1,5 @@
+sf apex generate class -n CustomLeadWebService -t DefaultApexClass -d force-app/main/default/classes
+
+sf apex generate trigger -n AutoLeadConversionTrigger -s Lead -t ApexTrigger -d force-app/main/default/triggers
+
+sf lightning generate component --type aura --name HealthMetricsCalculator --output-dir force-app/main/default/aura/HealthMetricsCalculator

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>CustomLeadWebService</members>
+        <members>CustomLeadWebServiceTest</members>
+        <members>LeadConversionProcessor</members>
+        <members>LeadConversionProcessorTest</members>
+        <members>HealthMetricsApexController</members>
+        <members>HealthMetricsApexControllerTest</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>AutoLeadConversionTrigger</members>
+        <name>ApexTrigger</name>
+    </types>
+    <types>
+        <members>HealthMetricsCalculator</members>
+        <name>AuraDefinitionBundle</name>
+    </types>
+    <types>
+        <members>Lead.Weight__c</members>
+        <members>Lead.Height__c</members>
+        <members>Lead.ExternalId__c</members>
+        <members>Account.Weight__c</members>
+        <members>Account.Height__c</members>
+        <members>Account.Age__c</members>
+        <members>Account.BMI__c</members>
+        <members>Account.Weight_Status__c</members>
+        <name>CustomField</name>
+    </types>
+    <version>60.0</version>
+</Package>
