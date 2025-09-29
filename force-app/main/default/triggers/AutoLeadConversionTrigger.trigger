@@ -1,3 +1,3 @@
-trigger AutoLeadConversionTrigger on Lead (before insert) {
-
+trigger AutoLeadConversionTrigger on Lead (after insert, after update) {
+    LeadConversionProcessor.handleLeadConversion(Trigger.new);
 }

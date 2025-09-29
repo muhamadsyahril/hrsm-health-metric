@@ -1,5 +1,89 @@
-public with sharing class HealthMetricsApexControllerTest {
-    public HealthMetricsApexControllerTest() {
-
+@isTest
+private class HealthMetricsApexControllerTest {
+    
+    @testSetup
+    static void setup() {
+        // Create test account with custom fields
+        Account testAcc = new Account(
+            Name = 'Test Account',
+            Height__c = 1.75,
+            Weight__c = 70.0,
+            Age__c = 30,
+            BMI__c = 22.9,
+            Weight_Status__c = 'Normal'
+        );
+        insert testAcc;
+    }
+    
+    @isTest
+    static void testGetAccountData() {
+        Account acc = [SELECT Id FROM Account LIMIT 1];
+        
+        Test.startTest();
+        Account result = BMICalculatorController.getAccountData(acc.Id);
+        Test.stopTest();
+        
+        System.assertNotEquals(null, result, 'Account should be returned');
+        System.assertEquals('Test Account', result.Name);
+        System.assertEquals(1.75, result.Height__c);
+        System.assertEquals(70.0, result.Weight__c);
+        System.assertEquals(30, result.Age__c);
+        System.assertEquals(22.9, result.BMI__c);
+        System.assertEquals('Normal', result.Weight_Status__c);
+    }
+    
+    @isTest
+    static void testGetAccountDataInvalidId() {
+        Boolean exceptionThrown = false;
+        
+        Test.startTest();
+        try {
+            BMICalculatorController.getAccountData('001000000000000');
+        } catch (AuraHandledException e) {
+            exceptionThrown = true;
+            System.assert(e.getMessage().contains('Error retrieving account data'));
+        }
+        Test.stopTest();
+        
+        System.assertEquals(true, exceptionThrown, 'Exception should be thrown for invalid ID');
+    }
+    
+    @isTest
+    static void testUpdateAccountBMI() {
+        Account acc = [SELECT Id FROM Account LIMIT 1];
+        
+        Test.startTest();
+        BMICalculatorController.updateAccountBMI(acc.Id, 25.5, 'Overweight');
+        Test.stopTest();
+        
+        Account updatedAcc = [SELECT Id, BMI__c, Weight_Status__c FROM Account WHERE Id = :acc.Id];
+        System.assertEquals(25.5, updatedAcc.BMI__c, 'BMI should be updated');
+        System.assertEquals('Overweight', updatedAcc.Weight_Status__c, 'Weight status should be updated');
+    }
+    
+    @isTest
+    static void testUpdateAccountBMIUnderweight() {
+        Account acc = [SELECT Id FROM Account LIMIT 1];
+        
+        Test.startTest();
+        BMICalculatorController.updateAccountBMI(acc.Id, 17.5, 'Underweight');
+        Test.stopTest();
+        
+        Account updatedAcc = [SELECT Id, BMI__c, Weight_Status__c FROM Account WHERE Id = :acc.Id];
+        System.assertEquals(17.5, updatedAcc.BMI__c);
+        System.assertEquals('Underweight', updatedAcc.Weight_Status__c);
+    }
+    
+    @isTest
+    static void testUpdateAccountBMIObese() {
+        Account acc = [SELECT Id FROM Account LIMIT 1];
+        
+        Test.startTest();
+        BMICalculatorController.updateAccountBMI(acc.Id, 32.0, 'Obese');
+        Test.stopTest();
+        
+        Account updatedAcc = [SELECT Id, BMI__c, Weight_Status__c FROM Account WHERE Id = :acc.Id];
+        System.assertEquals(32.0, updatedAcc.BMI__c);
+        System.assertEquals('Obese', updatedAcc.Weight_Status__c);
     }
 }

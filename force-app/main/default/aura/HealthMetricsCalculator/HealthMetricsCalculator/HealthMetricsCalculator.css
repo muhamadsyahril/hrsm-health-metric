@@ -1,2 +1,23 @@
-.THIS {
+.THIS .slds-card {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.THIS .slds-theme_success {
+    background-color: #d1f4d1;
+    border: 2px solid #4bca81;
+}
+
+.THIS .slds-theme_warning {
+    background-color: #fef3cd;
+    border: 2px solid #ffb75d;
+}
+
+.THIS .slds-theme_error {
+    background-color: #feded8;
+    border: 2px solid #ea001e;
+}
+
+.THIS input.slds-input {
+    background-color: #ffffff;
 }
