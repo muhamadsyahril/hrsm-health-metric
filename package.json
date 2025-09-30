@@ -1,0 +1,28 @@
+{
+  "name": "hrsm-health-metrics",
+  "version": "1.0.0",
+  "description": "Hrsm Health Metrics",
+  "scripts": {
+    "setup": "bash scripts/setup.sh",
+    "deploy": "bash scripts/deploy.sh",
+    "test": "bash scripts/test.sh",
+    "test:specific": "bash scripts/test-specific.sh",
+    "create:data": "bash scripts/create-data.sh",
+    "cleanup": "bash scripts/cleanup.sh",
+    "org:open": "sf org open",
+    "push": "sf project deploy start",
+    "pull": "sf project retrieve start",
+    "status": "sf org display"
+  },
+  "keywords": [
+    "salesforce",
+    "sfdx",
+    "health",
+    "bmi"
+  ],
+  "author": "Muhamad Syahril",
+  "license": "MIT",
+  "devDependencies": {
+    "@salesforce/cli": "^2.0.0"
+  }
+}
