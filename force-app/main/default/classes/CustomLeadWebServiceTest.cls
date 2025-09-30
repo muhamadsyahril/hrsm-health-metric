@@ -45,7 +45,7 @@ private class CustomLeadWebServiceTest {
         System.assertEquals('Doe', createdLead.LastName);
         System.assertEquals('john.doe@example.com', createdLead.Email);
         System.assertEquals(75.5, createdLead.Weight__c);
-        System.assertEquals(1.75, createdLead.Height__c);
+        System.assertEquals(180, createdLead.Height__c);
         System.assertEquals('EXT123', createdLead.ExternalId__c);
     }
     

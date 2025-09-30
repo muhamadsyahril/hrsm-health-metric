@@ -1,18 +1,19 @@
 public with sharing class HealthMetricsApexController {
     
-    @AuraEnabled
+    @AuraEnabled(cacheable=true)
     public static Account fetchAccountHealthData(String accountId) {
         try {
-            return [SELECT Id, Name, Height__c, Weight__c, Age__c, BMI__c, Weight_Status__c
+            Account acc = [SELECT Id, Name, Height__c, Weight__c, Age__c, BMI__c, Weight_Status__c
                    FROM Account 
                    WHERE Id = :accountId 
                    LIMIT 1];
+            return acc;
         } catch (Exception e) {
             throw new AuraHandledException('Error retrieving account data: ' + e.getMessage());
         }
     }
     
-    @AuraEnabled
+    @AuraEnabled(cacheable=true)
     public static void persistAccountHealthMetrics(String accountId, Decimal bmiValue, String statusValue) {
         try {
             Account acc = new Account(
