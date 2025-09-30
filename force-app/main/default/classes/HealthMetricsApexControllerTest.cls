@@ -34,18 +34,12 @@ private class HealthMetricsApexControllerTest {
     
     @isTest
     static void testFetchAccountHealthDataInvalidId() {
-        Boolean exceptionThrown = false;
         
         Test.startTest();
-        try {
-            HealthMetricsApexController.fetchAccountHealthData('001000000000000');
-        } catch (AuraHandledException e) {
-            exceptionThrown = true;
-            System.assert(e.getMessage().contains('Error retrieving account data'));
-        }
+        Object result = HealthMetricsApexController.fetchAccountHealthData('001000000000000');
         Test.stopTest();
         
-        System.assertEquals(true, exceptionThrown, 'Exception should be thrown for invalid ID');
+        System.assertEquals(null, result, 'Should return null for invalid account Id');
     }
     
     @isTest
