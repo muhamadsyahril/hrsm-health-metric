@@ -1,7 +1,7 @@
 public with sharing class HealthMetricsApexController {
     
     @AuraEnabled
-    public static Account getAccountData(String accountId) {
+    public static Account fetchAccountHealthData(String accountId) {
         try {
             return [SELECT Id, Name, Height__c, Weight__c, Age__c, BMI__c, Weight_Status__c
                    FROM Account 
@@ -13,12 +13,12 @@ public with sharing class HealthMetricsApexController {
     }
     
     @AuraEnabled
-    public static void updateAccountBMI(String accountId, Decimal bmi, String weightStatus) {
+    public static void persistAccountHealthMetrics(String accountId, Decimal bmiValue, String statusValue) {
         try {
             Account acc = new Account(
                 Id = accountId,
-                BMI__c = bmi,
-                Weight_Status__c = weightStatus
+                BMI__c = bmiValue,
+                Weight_Status__c = statusValue
             );
             update acc;
         } catch (Exception e) {

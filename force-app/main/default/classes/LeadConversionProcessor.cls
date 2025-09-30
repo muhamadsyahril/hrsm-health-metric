@@ -1,42 +1,36 @@
 public class LeadConversionProcessor {
     
-    public static void handleLeadConversion(List<Lead> newLeads) {
-        List<Database.LeadConvert> leadConverts = new List<Database.LeadConvert>();
+    public static void processLeadConversion(List<Lead> newLeadRecords) {
+        List<Database.LeadConvert> leadsToConvert = new List<Database.LeadConvert>();
         
-        for (Lead l : newLeads) {
-            // Check if all required fields are not null
-            if (l.Phone != null && 
-                l.Email != null && 
-                l.Weight__c != null && 
-                l.Height__c != null && 
-                l.ExternalId__c != null &&
-                !l.IsConverted) {
+        for (Lead leadRec : newLeadRecords) {
+            if (leadRec.Phone != null && 
+                leadRec.Email != null && 
+                leadRec.Weight__c != null && 
+                leadRec.Height__c != null && 
+                leadRec.ExternalId__c != null &&
+                !leadRec.IsConverted) {
                 
-                Database.LeadConvert lc = new Database.LeadConvert();
-                lc.setLeadId(l.Id);
+                Database.LeadConvert convertOperation = new Database.LeadConvert();
+                convertOperation.setLeadId(leadRec.Id);
                 
-                // Get default lead status for conversion
-                LeadStatus convertStatus = [SELECT Id, MasterLabel 
-                                           FROM LeadStatus 
-                                           WHERE IsConverted = true 
-                                           LIMIT 1];
-                lc.setConvertedStatus(convertStatus.MasterLabel);
+                LeadStatus conversionStatus = [SELECT Id, MasterLabel 
+                                               FROM LeadStatus 
+                                               WHERE IsConverted = true 
+                                               LIMIT 1];
+                convertOperation.setConvertedStatus(conversionStatus.MasterLabel);
+                convertOperation.setDoNotCreateOpportunity(true);
                 
-                // Don't create an opportunity
-                lc.setDoNotCreateOpportunity(true);
-                
-                leadConverts.add(lc);
+                leadsToConvert.add(convertOperation);
             }
         }
         
-        // Convert leads if any qualify
-        if (!leadConverts.isEmpty()) {
-            List<Database.LeadConvertResult> results = Database.convertLead(leadConverts, false);
+        if (!leadsToConvert.isEmpty()) {
+            List<Database.LeadConvertResult> conversionResults = Database.convertLead(leadsToConvert, false);
             
-            // Log any errors
-            for (Database.LeadConvertResult result : results) {
-                if (!result.isSuccess()) {
-                    for (Database.Error err : result.getErrors()) {
+            for (Database.LeadConvertResult convResult : conversionResults) {
+                if (!convResult.isSuccess()) {
+                    for (Database.Error err : convResult.getErrors()) {
                         System.debug('Lead conversion error: ' + err.getMessage());
                     }
                 }

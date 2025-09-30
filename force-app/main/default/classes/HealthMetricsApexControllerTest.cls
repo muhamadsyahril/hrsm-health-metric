@@ -2,7 +2,7 @@
 private class HealthMetricsApexControllerTest {
     
     @testSetup
-    static void setup() {
+    static void setupTestData() {
         // Create test account with custom fields
         Account testAcc = new Account(
             Name = 'Test Account',
@@ -16,11 +16,11 @@ private class HealthMetricsApexControllerTest {
     }
     
     @isTest
-    static void testGetAccountData() {
+    static void testFetchAccountHealthData() {
         Account acc = [SELECT Id FROM Account LIMIT 1];
         
         Test.startTest();
-        Account result = BMICalculatorController.getAccountData(acc.Id);
+        Account result = HealthMetricsApexController.fetchAccountHealthData(acc.Id);
         Test.stopTest();
         
         System.assertNotEquals(null, result, 'Account should be returned');
@@ -33,12 +33,12 @@ private class HealthMetricsApexControllerTest {
     }
     
     @isTest
-    static void testGetAccountDataInvalidId() {
+    static void testFetchAccountHealthDataInvalidId() {
         Boolean exceptionThrown = false;
         
         Test.startTest();
         try {
-            BMICalculatorController.getAccountData('001000000000000');
+            HealthMetricsApexController.fetchAccountHealthData('001000000000000');
         } catch (AuraHandledException e) {
             exceptionThrown = true;
             System.assert(e.getMessage().contains('Error retrieving account data'));
@@ -49,11 +49,11 @@ private class HealthMetricsApexControllerTest {
     }
     
     @isTest
-    static void testUpdateAccountBMI() {
+    static void testPersistAccountHealthMetrics() {
         Account acc = [SELECT Id FROM Account LIMIT 1];
         
         Test.startTest();
-        BMICalculatorController.updateAccountBMI(acc.Id, 25.5, 'Overweight');
+        HealthMetricsApexController.persistAccountHealthMetrics(acc.Id, 25.5, 'Overweight');
         Test.stopTest();
         
         Account updatedAcc = [SELECT Id, BMI__c, Weight_Status__c FROM Account WHERE Id = :acc.Id];
@@ -62,11 +62,11 @@ private class HealthMetricsApexControllerTest {
     }
     
     @isTest
-    static void testUpdateAccountBMIUnderweight() {
+    static void testPersistAccountHealthMetricsUnderweight() {
         Account acc = [SELECT Id FROM Account LIMIT 1];
         
         Test.startTest();
-        BMICalculatorController.updateAccountBMI(acc.Id, 17.5, 'Underweight');
+        HealthMetricsApexController.persistAccountHealthMetrics(acc.Id, 17.5, 'Underweight');
         Test.stopTest();
         
         Account updatedAcc = [SELECT Id, BMI__c, Weight_Status__c FROM Account WHERE Id = :acc.Id];
@@ -75,11 +75,11 @@ private class HealthMetricsApexControllerTest {
     }
     
     @isTest
-    static void testUpdateAccountBMIObese() {
+    static void testPersistAccountHealthMetricsObese() {
         Account acc = [SELECT Id FROM Account LIMIT 1];
         
         Test.startTest();
-        BMICalculatorController.updateAccountBMI(acc.Id, 32.0, 'Obese');
+        HealthMetricsApexController.persistAccountHealthMetrics(acc.Id, 32.0, 'Obese');
         Test.stopTest();
         
         Account updatedAcc = [SELECT Id, BMI__c, Weight_Status__c FROM Account WHERE Id = :acc.Id];
