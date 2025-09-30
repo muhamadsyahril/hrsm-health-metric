@@ -1,6 +1,6 @@
 ({
     loadAccountData: function(component, recordId) {
-        var action = component.get("c.getAccountData");
+        var action = component.get("c.fetchAccountHealthData");
         action.setParams({
             accountId: recordId
         });

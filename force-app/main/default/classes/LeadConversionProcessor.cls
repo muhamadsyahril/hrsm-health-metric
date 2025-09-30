@@ -32,7 +32,7 @@ public class LeadConversionProcessor {
                 if (convResult.isSuccess()) {
                     // Copy Lead custom fields to Account
                     Lead originalLead = [
-                        SELECT Id, Weight__c, Height__c, ExternalId__c 
+                        SELECT Id, Weight__c, Height__c
                         FROM Lead 
                         WHERE Id = :convResult.getLeadId()
                         LIMIT 1
@@ -45,7 +45,6 @@ public class LeadConversionProcessor {
                     
                     acc.Weight__c = originalLead.Weight__c;
                     acc.Height__c = originalLead.Height__c;
-                    acc.ExternalId__c = originalLead.ExternalId__c;
                     update acc;
                     
                 } else {
