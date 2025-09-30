@@ -3,3 +3,13 @@ sf apex generate class -n CustomLeadWebService -t DefaultApexClass -d force-app/
 sf apex generate trigger -n AutoLeadConversionTrigger -s Lead -t ApexTrigger -d force-app/main/default/triggers
 
 sf lightning generate component --type aura --name HealthMetricsCalculator --output-dir force-app/main/default/aura/HealthMetricsCalculator
+
+sf apex run test --test-level RunLocalTests --result-format human --code-coverage --synchronous
+
+sf project deploy start --source-dir force-app
+
+sf org create scratch --definition-file config/project-scratch-def.json --alias HrsmaBMI --duration-days 30 --set-default --target-dev-hub DevHub
+
+sf org create scratch --definition-file config/project-scratch-def.json --alias HrsmaBMI --duration-days 30 --set-default -v
+
+sf org login web
