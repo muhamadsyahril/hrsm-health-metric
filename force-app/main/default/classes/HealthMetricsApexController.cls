@@ -13,7 +13,7 @@ public with sharing class HealthMetricsApexController {
         }
     }
     
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled()
     public static void persistAccountHealthMetrics(String accountId, Decimal bmiValue, String statusValue) {
         try {
             Account acc = new Account(
