@@ -49,6 +49,7 @@
                 this.showToast('Success', 'BMI updated on Account record', 'success');
             } else if (state === "ERROR") {
                 var errors = response.getError();
+                console.error(errors);
                 this.showToast('Error', 'Error updating account', 'error');
             }
         });
