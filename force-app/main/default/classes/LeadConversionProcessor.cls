@@ -29,7 +29,26 @@ public class LeadConversionProcessor {
             List<Database.LeadConvertResult> conversionResults = Database.convertLead(leadsToConvert, false);
             
             for (Database.LeadConvertResult convResult : conversionResults) {
-                if (!convResult.isSuccess()) {
+                if (convResult.isSuccess()) {
+                    // Copy Lead custom fields to Account
+                    Lead originalLead = [
+                        SELECT Id, Weight__c, Height__c, ExternalId__c 
+                        FROM Lead 
+                        WHERE Id = :convResult.getLeadId()
+                        LIMIT 1
+                    ];
+                    
+                    Account acc = [
+                        SELECT Id FROM Account WHERE Id = :convResult.getAccountId()
+                        LIMIT 1
+                    ];
+                    
+                    acc.Weight__c = originalLead.Weight__c;
+                    acc.Height__c = originalLead.Height__c;
+                    acc.ExternalId__c = originalLead.ExternalId__c;
+                    update acc;
+                    
+                } else {
                     for (Database.Error err : convResult.getErrors()) {
                         System.debug('Lead conversion error: ' + err.getMessage());
                     }
