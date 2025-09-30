@@ -14,11 +14,10 @@
     calculateBMI: function(component, event, helper) {
         var height = component.get("v.height");
         var weight = component.get("v.weight");
-        var name = component.get("v.name");
         var age = component.get("v.age");
         
         // Validation
-        if (!name || !age || !height || !weight) {
+        if (!age || !height || !weight) {
             helper.showToast('Error', 'Please fill in all fields', 'error');
             return;
         }

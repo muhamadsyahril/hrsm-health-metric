@@ -36,7 +36,7 @@
     },
     
     updateAccountBMI: function(component, recordId, bmi, weightStatus) {
-        var action = component.get("c.updateAccountBMI");
+        var action = component.get("c.persistAccountHealthMetrics");
         action.setParams({
             accountId: recordId,
             bmi: bmi,
